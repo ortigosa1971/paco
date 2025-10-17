@@ -120,7 +120,7 @@
 
   <!-- Botón historial -->
   <div class="weather-screen">
-    <button onclick="location.href='https://viejo-production-3e8d.up.railway.app/'" class="top-right-button mt-4 w-full sm:w-auto">📊 Ver Historial</button>
+    <button id="btn-historial" class="top-right-button mt-4 w-full sm:w-auto">📊 Ver Historial</button>
   </div>
 
   <!-- Overlay por sesión cerrada -->
@@ -346,8 +346,45 @@
   })();
   </script>
 
+<script>
+  (function(){
+    function setUrl(u){
+      var btn = document.getElementById('btn-historial');
+      if (btn) btn.onclick = function(){ window.location.href = u; };
+    }
+    // Fallback por si /historial-url no existe
+    var fallback = 'https://viejo-production.up.railway.app/';
+    fetch('/historial-url')
+      .then(function(r){ return r.ok ? r.json() : { url: fallback }; })
+      .then(function(cfg){ setUrl((cfg && cfg.url) || fallback); })
+      .catch(function(){ setUrl(fallback); });
+  })();
+</script>
+
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
