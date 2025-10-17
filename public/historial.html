@@ -50,7 +50,7 @@
     <!-- Abre el historial en la MISMA pestaña -->
     <button
       class="btn"
-      onclick="window.location.href='https://viejo-production.up.railway.app/">
+      id="btn-historial">
       Abrir historial
     </button>
 
@@ -62,8 +62,24 @@
     -->
 
     <!-- Botón de volver opcional (ajusta la ruta si procede) -->
-    <button class="btn" onclick="window.location.href='inicio.html'">Volver</button>
+    <button class="btn" id="btn-historial">Volver</button>
   </div>
+<script>
+  (function(){
+    function setUrl(u){
+      var btn = document.getElementById('btn-historial');
+      if (btn) btn.onclick = function(){ window.location.href = u; };
+    }
+    // Fallback por si /historial-url no existe
+    var fallback = 'https://viejo-production.up.railway.app/';
+    fetch('/historial-url')
+      .then(function(r){ return r.ok ? r.json() : { url: fallback }; })
+      .then(function(cfg){ setUrl((cfg && cfg.url) || fallback); })
+      .catch(function(){ setUrl(fallback); });
+  })();
+</script>
+
 </body>
 </html>
+
 
